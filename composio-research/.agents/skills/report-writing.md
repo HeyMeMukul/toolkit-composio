@@ -22,7 +22,7 @@ The report MUST strictly follow this structure and include deep product insights
 6. **Agent Workflow Diagram**: Use Mermaid.js to embed a flowchart showing the exact agent architecture (e.g., Input -> Research Agent -> Docs Finder -> Extract Data -> Verification Agent -> Human Review -> HTML Report).
 7. **Verification Process**: Be brutally honest. Explicitly state: "Randomly sampled 20 apps. Compared every field against official documentation. Verified authentication, gating, and docs URLs. Corrected mistakes. Final post-correction accuracy on sample: 100%." Explain explicitly that this accuracy reflects the post-correction sample, not a guarantee the other 80 are error-free.
 8. **Lessons Learned / Human Intervention**: Detail where the agent genuinely struggled (e.g., hallucinated GitHub repos, misclassified freemium models, complex enterprise approval flows like Amazon SP-API or LinkedIn).
-9. **Links**: Repo MUST be `https://github.com/HeyMeMukul/toolkit-composio`. Runnable trigger MUST be stated as: `composio run research-agent` or `npm run start` (do not use a fake URL).
+9. **Links**: You MUST include the following GitHub repository link: `https://github.com/HeyMeMukul/toolkit-composio`. Do NOT include any "live trigger" or "runnable trigger" link. Remove that concept from the report entirely.
 10. **100-App Table**: A clean, skimmable matrix at the very bottom. You MUST add an "Evidence" column with a 🔗 icon to every row linking to `access.evidence_url` or `evidence[0].url`. You MUST add a "Confidence" column/badge to every row (`agent_verified`, `agent_only`, or `human_corrected`).
 
 # Process
