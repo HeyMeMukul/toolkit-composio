@@ -3,29 +3,34 @@ name: report-writing
 description: Skill for building the final HTML Product Ops Case Study report.
 ---
 # Role
-You are the report-builder agent, a Senior Product Ops Manager. Your job is to write a polished, insightful HTML Case Study deliverable.
+You are the report-builder agent. Your job is to produce the final HTML deliverable.
 
 # Hard rules
-- Write/rewrite `output/report.html` from scratch.
-- Ensure the output is ONE self-contained HTML file. Use inline CSS (and standard CDNs for charts/fonts like Chart.js or Mermaid if needed).
-- No dependency on anything not loaded via CDN.
-- Use semantic headings, readable by humans and parseable by machines.
-
-# Requirements for Report Output
-The report MUST strictly follow this structure and include deep product insights, not just shallow numbers.
-
-1. **Executive Summary**: A brief overview of the project and methodology.
-2. **Key Insights (5-7 bullet points)**: Deep product insights (e.g., "CRM vendors overwhelmingly expose OAuth2 because integrations are core to their ecosystem", "Finance APIs require stronger verification due to compliance", "AI-native startups overwhelmingly provide API keys").
-3. **Category Breakdown**: Include a visual breakdown (use Chart.js or HTML/CSS) showing which categories are most self-serve vs gated.
-4. **Auth Method Distribution**: Include a pie chart or visual showing auth dominance.
-5. **Buildability Matrix**: Group and explain common blockers logically (e.g., "Partner approval", "Enterprise contracts", "Manual developer review", "Paid subscription requirements"). Explain WHY easy wins are easy (productivity/dev tools expose stable REST APIs & dev portals) and WHY hard categories are hard (Ads = dev approval, Enterprise CRM = sales contact).
-6. **Agent Workflow Diagram**: Use Mermaid.js to embed a flowchart showing the exact agent architecture (e.g., Input -> Research Agent -> Docs Finder -> Extract Data -> Verification Agent -> Human Review -> HTML Report).
-7. **Verification Process**: Be brutally honest. Explicitly state: "Randomly sampled 20 apps. Compared every field against official documentation. Verified authentication, gating, and docs URLs. Corrected mistakes. Final post-correction accuracy on sample: 100%." Explain explicitly that this accuracy reflects the post-correction sample, not a guarantee the other 80 are error-free.
-8. **Lessons Learned / Human Intervention**: Detail where the agent genuinely struggled (e.g., hallucinated GitHub repos, misclassified freemium models, complex enterprise approval flows like Amazon SP-API or LinkedIn).
-9. **Links**: You MUST include the following GitHub repository link: `https://github.com/HeyMeMukul/toolkit-composio`. Do NOT include any "live trigger" or "runnable trigger" link. Remove that concept from the report entirely.
-10. **100-App Table**: A clean, skimmable matrix at the very bottom. You MUST add an "Evidence" column with a 🔗 icon to every row linking to `access.evidence_url` or `evidence[0].url`. You MUST add a "Confidence" column/badge to every row (`agent_verified`, `agent_only`, or `human_corrected`).
+- Do NOT write HTML by hand. Run the deterministic report generator script instead.
+- The script handles all structure, styling, evidence links, confidence badges, insights, and verification caveats.
+- Your only job is to run the two scripts in order and confirm the output.
 
 # Process
-1. Read `data/verified/*.json`, `data/patterns.json`, `data/narrative.json`, and `output/verification_log.json`.
-2. Synthesize the data into the requested Product Ops Case Study HTML structure.
-3. Write `output/report.html`.
+1. Run `python3 scripts/aggregate.py` to produce `data/patterns.json` from `data/verified/*.json`.
+2. Run `node scripts/generate_report.js` to produce `output/report.html` from `data/patterns.json` and `output/verification_log.json`.
+3. Confirm the file was written and reply with the app count.
+
+# Customization
+- To change the GitHub repo URL: `node scripts/generate_report.js --repo-url=https://github.com/YOUR/REPO`
+- To change the report structure or styling: edit `scripts/generate_report.js` directly.
+
+# What the script guarantees
+The generated report always includes:
+1. Executive Summary with deep product insights (auto-generated from data patterns)
+2. Category Breakdown with auth distribution and Hard Categories table
+3. Easy Wins section with category-level explanation
+4. Common Blockers grouped logically with examples
+5. Apps That Defeated the Agent with per-app reasons
+6. Agent Pipeline with Mermaid.js flowchart and honest human-intervention details
+7. Verification Process with accuracy stats, caveat about sample size, and specific mismatches
+8. Full App Matrix with ALL columns: #, App, Category, One-Liner, Auth, Access, API, MCP, Buildability, Evidence (🔗), Confidence (badge)
+
+# Failure handling
+If aggregate.py or generate_report.js fails, read the error output and fix the issue. Common fixes:
+- Missing `data/verified/` files: ensure the promotion step ran
+- Missing `output/verification_log.json`: create an empty array `[]` file

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,1165 +5,1569 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Product Ops Case Study: 100 App API Research</title>
 <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 1200px; margin: 0 auto; padding: 2rem; }
-    h1, h2, h3 { color: #111; }
-    table { border-collapse: collapse; width: 100%; margin-top: 2rem; font-size: 0.9rem; }
-    th, td { border: 1px solid #ddd; padding: 12px 8px; text-align: left; }
-    th { background-color: #f8f9fa; font-weight: bold; position: sticky; top: 0; }
-    tr:nth-child(even) { background-color: #f9f9f9; }
-    .badge { display: inline-block; padding: 0.25em 0.5em; font-size: 0.75em; font-weight: 700; border-radius: 0.25rem; background-color: #e9ecef; color: #495057; margin: 0.1rem; }
-    .badge-success { background-color: #d4edda; color: #155724; }
-    .badge-warning { background-color: #fff3cd; color: #856404; }
-    .badge-danger { background-color: #f8d7da; color: #721c24; }
-    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    :root { --bg: #f4f5f7; --card-bg: #ffffff; --text: #1a1a2e; --text-muted: #6b7280; --border: #e5e7eb; --accent: #4f46e5; --green: #059669; --yellow: #d97706; --red: #dc2626; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text); background: var(--bg); padding: 2rem; max-width: 1400px; margin: 0 auto; }
+    h1 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--text); }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; color: var(--text); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; }
+    h3 { font-size: 1.1rem; margin: 1rem 0 0.5rem; color: var(--text); }
+    .subtitle { color: var(--text-muted); margin-bottom: 2rem; font-size: 1rem; }
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+    .stat-number { font-size: 2.2rem; font-weight: 800; color: var(--accent); }
+    .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+    li { margin-bottom: 0.4rem; }
+    table { border-collapse: collapse; width: 100%; font-size: 0.82rem; margin-top: 1rem; }
+    th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #f1f3f9; font-weight: 700; position: sticky; top: 0; z-index: 1; white-space: nowrap; }
+    tr:nth-child(even) { background: #fafbfc; }
+    tr:hover { background: #f0f0ff; }
+    .badge { display: inline-block; padding: 2px 8px; font-size: 0.72rem; font-weight: 700; border-radius: 4px; white-space: nowrap; margin: 1px; }
+    .badge-success { background: #d1fae5; color: #065f46; }
+    .badge-warning { background: #fef3c7; color: #92400e; }
+    .badge-danger { background: #fee2e2; color: #991b1b; }
+    .badge-verified { background: #d1fae5; color: #065f46; }
+    .badge-agent-only { background: #e5e7eb; color: #4b5563; }
+    .badge-human { background: #dbeafe; color: #1e40af; }
+    .badge-mcp-official { background: #dbeafe; color: #1e40af; }
+    .badge-mcp-community { background: #fef3c7; color: #92400e; }
+    .badge-mcp-none { background: #f3f4f6; color: #9ca3af; }
+    .insight-list li { margin-bottom: 0.8rem; line-height: 1.6; }
+    .hard-cat-table { width: auto; min-width: 500px; }
+    .hard-cat-table th, .hard-cat-table td { padding: 8px 16px; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .evidence-link { font-size: 1.1rem; }
+    .mermaid { margin: 1rem 0; }
+    .caveat { background: #fffbeb; border: 1px solid #fbbf24; border-radius: 8px; padding: 1rem; margin: 1rem 0; font-size: 0.9rem; }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-<script>mermaid.initialize({startOnLoad:true});</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true, theme:'neutral'});</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<h1>Product Ops Case Study: 100 App API Analysis</h1>
+<h1>🔬 Product Ops Case Study: 100-App API Research</h1>
+<p class="subtitle">Automated SaaS toolkit parity analysis — auth patterns, access gates, API surfaces, MCP status, and buildability verdicts across 100 applications.</p>
 
+<!-- SECTION 1: Executive Summary -->
 <div class="card">
-    <h2>1. Headline Patterns & Insights</h2>
-    <div class="grid">
-        <div>
-            <h3>Dominant Authentication</h3>
-            <ul>
-<li><strong>oauth2:</strong> 65 apps</li>
-<li><strong>api_key:</strong> 38 apps</li>
-<li><strong>token:</strong> 38 apps</li>
-<li><strong>basic:</strong> 11 apps</li>
-<li><strong>other:</strong> 5 apps</li>
-
-            </ul>
-            <p><strong>Insight:</strong> OAuth2 is dominant as it serves integrations where platforms act on behalf of end-users securely (especially in CRMs and Productivity categories). API keys remain popular for direct machine-to-machine developer tools (like Infra and AI).</p>
+    <h2>1. Executive Summary & Key Insights</h2>
+    <div class="grid" style="margin-bottom:1.5rem;">
+        <div style="text-align:center;">
+            <div class="stat-number">100</div>
+            <div class="stat-label">Apps Analyzed</div>
         </div>
-        <div>
-            <h3>Access: Gated vs Self-Serve</h3>
-            <ul>
-<li><strong>self_serve:</strong> 81 apps</li>
-<li><strong>gated:</strong> 19 apps</li>
-
-            </ul>
-            <p><strong>Insight:</strong> The vast majority of platforms are self-serve, reducing friction. Gated APIs are primarily found in enterprise-focused categories (e.g., Finance, Commerce) where risk, compliance, and support costs are higher. They often require paid tiers to avoid abuse.</p>
+        <div style="text-align:center;">
+            <div class="stat-number">81</div>
+            <div class="stat-label">Self-Serve</div>
+        </div>
+        <div style="text-align:center;">
+            <div class="stat-number">19</div>
+            <div class="stat-label">Gated</div>
+        </div>
+        <div style="text-align:center;">
+            <div class="stat-number">82</div>
+            <div class="stat-label">Easy Wins (Ready)</div>
         </div>
     </div>
-    
-    <h3>Common Blockers (Grouped)</h3>
-    <p>We found several recurring blockers that prevent immediate buildability:</p>
-    <ul>
-        <li><strong>Enterprise Contracts & Contact Sales:</strong>
-            <ul>
-                <li>No self-serve access, free tier, or sandbox available without an enterprise contract and partner contact.</li>
-                <li>API access requires enterprise contract and account manager contact.</li>
-                <li>No free developer sandbox. Requires existing partner or customer contract for on-demand sandboxes.</li>
-            </ul>
-        </li>
-        <li><strong>Paid Subscription Requirements:</strong>
-            <ul>
-                <li>Requires a paid Ecwid store plan.</li>
-                <li>Requires a paid Squarespace Commerce subscription to access API.</li>
-                <li>Requires a paid Aircall subscription (Essentials or Professional) to access the API.</li>
-                <li>Requires a Professional selling plan to register as a developer.</li>
-            </ul>
-        </li>
-        <li><strong>Manual Approval & Partner Programs:</strong>
-            <ul>
-                <li>API access requires applying to the LinkedIn developer program and waiting for approval.</li>
-                <li>Requires admin approval for developer token.</li>
-                <li>App Review required for full API access and production usage.</li>
-            </ul>
-        </li>
+    <h3>Key Product Insights</h3>
+    <ul class="insight-list">
+        <li><strong>OAUTH2</strong> is the dominant auth method (65 apps), reflecting the industry's shift toward delegated authorization — especially in CRM and Productivity categories where integrations act on behalf of end-users.</li>
+        <li><strong>81 of 100 apps (81%)</strong> offer self-serve developer access. The remaining 19 gated apps are concentrated in enterprise-facing categories (Finance, Ads, Commerce) where compliance, partner programs, and revenue protection justify friction.</li>
+        <li>Finance APIs overwhelmingly mandate <strong>OAuth2 and API keys</strong> due to regulatory compliance requirements — Stripe, Plaid, Brex, and Xero all enforce token-based authentication with strict scoping.</li>
+        <li>AI-native startups overwhelmingly provide <strong>simple API keys</strong>, optimizing for developer speed and quick prototyping over enterprise security controls.</li>
+        <li>Marketing and Ads APIs have the <strong>highest approval friction</strong> — Google Ads, LinkedIn Ads, and Meta Ads all require manual developer review, app approval processes, or developer token requests before API access is granted.</li>
+        <li>Easy wins are concentrated in <strong>Data, SEO and Scraping, Support and Helpdesk, Developer, Infra and Data platforms, Finance and Fintech, Productivity and Project Management</strong> because these categories expose stable REST APIs, standard OAuth2 flows, and self-service developer portals with generous free tiers.</li>
+        <li><strong>10 apps</strong> are currently blocked from agent toolkit integration. The most common root cause is enterprise/partner gating — not technical limitation — meaning these could be unlocked through business development outreach.</li>
     </ul>
-    
-    <h3>Apps that Defeated the Agent</h3>
-    <p>The following apps presented significant challenges or were entirely blocked for the agent:</p>
-    <ul>
-<li><strong>LinkedIn Ads</strong></li>
-<li><strong>Ecwid</strong></li>
-<li><strong>Squarespace</strong></li>
-<li><strong>Aircall</strong></li>
-<li><strong>Google Ads</strong></li>
-<li><strong>Salesforce Commerce Cloud</strong></li>
-<li><strong>Amazon Selling Partner</strong></li>
-<li><strong>DealCloud</strong></li>
-<li><strong>Meta Ads</strong></li>
-<li><strong>PitchBook</strong></li>
-
-    </ul>
-    
-    <h3>Easy Wins (Ready for Integration)</h3>
-    <p>We found 82 apps that are easily buildable.</p>
 </div>
 
+<!-- SECTION 2: Category Breakdown -->
 <div class="card">
-    <h2>2. The Agent Pipeline</h2>
-    <p>This report was generated using an autonomous multi-agent pipeline designed to research, verify, and document API integrations. The pipeline mimics a Product Ops workflow by systematically reviewing developer docs, identifying authentication patterns, checking MCP (Model Context Protocol) server status, and determining build readiness.</p>
-    
-    <div class="mermaid">
-    graph TD
-        A[Input: List of 100 Apps] --> B(Research Worker Agent)
-        B --> C{API Docs Accessible?}
-        C -->|Yes| D[Extract Auth, Access, API Surface]
-        C -->|No| E[Search Web for Docs/Pricing]
-        E --> D
-        D --> F[Check MCP Status & Buildability]
-        F --> G(Verifier Agent)
-        G --> H{Verification Pass}
-        H -->|Pass 1: Sample Verification| I[Log Mismatches & Correct]
-        H -->|Pass 2: Follow-up| J[Confirm Accuracy]
-        I --> J
-        J --> K(Report Builder Agent)
-        K --> L[Generate Final HTML Report]
+    <h2>2. Category Breakdown</h2>
+    <div class="grid">
+        <div>
+            <h3>Auth Distribution</h3>
+            <ul>
+                <li><strong>oauth2:</strong> 65 apps</li>
+                <li><strong>api_key:</strong> 38 apps</li>
+                <li><strong>token:</strong> 38 apps</li>
+                <li><strong>basic:</strong> 11 apps</li>
+                <li><strong>other:</strong> 5 apps</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Access: Self-Serve vs Gated by Category</h3>
+            <ul>
+                <li><strong>AI, Research and Media-native:</strong> 6 self-serve, 4 gated</li>
+                <li><strong>Communications and Messaging:</strong> 9 self-serve, 1 gated</li>
+                <li><strong>CRM and Sales:</strong> 7 self-serve, 3 gated</li>
+                <li><strong>Data, SEO and Scraping:</strong> 10 self-serve, 0 gated</li>
+                <li><strong>Developer, Infra and Data platforms:</strong> 10 self-serve, 0 gated</li>
+                <li><strong>Ecommerce:</strong> 6 self-serve, 4 gated</li>
+                <li><strong>Finance and Fintech:</strong> 9 self-serve, 1 gated</li>
+                <li><strong>Marketing, Ads, Email and Social:</strong> 6 self-serve, 4 gated</li>
+                <li><strong>Productivity and Project Management:</strong> 9 self-serve, 1 gated</li>
+                <li><strong>Support and Helpdesk:</strong> 9 self-serve, 1 gated</li>
+            </ul>
+        </div>
     </div>
     
-    <p><strong>Where a human was needed:</strong> The agents operated mostly autonomously, but humans defined the initial target list, the structure of the JSON schemas, and prompted the orchestration. Edge cases like complex enterprise gating sometimes required human-in-the-loop review.</p>
+    <h3>Hard Categories — Why They're Difficult</h3>
+    <table class="hard-cat-table">
+        <tr><th>Category</th><th>Gated Apps</th><th>% Gated</th><th>Why Difficult</th></tr>
+        <tr><td>Marketing, Ads, Email and Social</td><td>4 / 10</td><td>40%</td><td>Developer approval & app review required</td></tr>
+        <tr><td>AI, Research and Media-native</td><td>4 / 10</td><td>40%</td><td>OAuth/waitlist gating</td></tr>
+        <tr><td>Ecommerce</td><td>4 / 10</td><td>40%</td><td>Partner programs & paid plans</td></tr>
+        <tr><td>CRM and Sales</td><td>3 / 10</td><td>30%</td><td>Enterprise sales contact required</td></tr>
+        <tr><td>Communications and Messaging</td><td>1 / 10</td><td>10%</td><td>Paid subscription tiers</td></tr>
+        <tr><td>Support and Helpdesk</td><td>1 / 10</td><td>10%</td><td>Paid plan requirements</td></tr>
+        <tr><td>Finance and Fintech</td><td>1 / 10</td><td>10%</td><td>Compliance & regulatory requirements</td></tr>
+        <tr><td>Productivity and Project Management</td><td>1 / 10</td><td>10%</td><td>Various access restrictions</td></tr>
+    </table>
+    
+</div>
+
+<!-- SECTION 3: Easy Wins -->
+<div class="card">
+    <h2>3. Easy Wins — Ready for Integration</h2>
+    <p><strong>82 apps</strong> are immediately buildable as agent toolkits. These are concentrated in categories that expose stable REST APIs, standard OAuth2 flows, and self-service developer portals with generous free tiers.</p>
+    
+    <h3>Top Easy-Win Categories</h3>
+    <ul>
+        <li><strong>Data, SEO and Scraping</strong> (10 ready): DataForSEO, MrScraper, Firecrawl, Bright Data, Clay +5 more</li>
+        <li><strong>Support and Helpdesk</strong> (10 ready): Intercom, Pylon, Gladly, Plain, Freshdesk +5 more</li>
+        <li><strong>Developer, Infra and Data platforms</strong> (10 ready): Snowflake, GitHub, Cloudflare, Netlify, Sentry +5 more</li>
+        <li><strong>Finance and Fintech</strong> (9 ready): Binance, Brex, QuickBooks, Paygent Connect, iPayX +4 more</li>
+        <li><strong>Productivity and Project Management</strong> (9 ready): Asana, ClickUp, Linear, Coda, Harvest +4 more</li>
+    </ul>
+    
+</div>
+
+<!-- SECTION 4: Common Blockers -->
+<div class="card">
+    <h2>4. Common Blockers (Grouped)</h2>
+    <p>The following recurring patterns prevent immediate buildability:</p>
+    <ul>
+        <li><strong>Paid subscription required</strong> (4 apps) — e.g., Ecwid: API access requires a paid Ecwid store plan.; Squarespace: Requires a paid Squarespace Commerce subscription to access API.; Aircall: Requires a paid Aircall subscription (Essentials or Professional) to access the API.</li>
+        <li><strong>Manual approval / Developer review</strong> (3 apps) — e.g., LinkedIn Ads: API access requires applying to the LinkedIn developer program and waiting for approval.; Google Ads: Requires admin approval for developer token.; Meta Ads: App Review required for full API access and production usage.</li>
+        <li><strong>Enterprise contracts / Contact sales</strong> (3 apps) — e.g., Salesforce Commerce Cloud: No free developer sandbox. Requires existing partner or customer contract for on-demand sandboxes.; DealCloud: No self-serve access, free tier, or sandbox available without an enterprise contract and partner contact.; PitchBook: API access requires enterprise contract and account manager contact.</li>
+    </ul>
+</div>
+
+<!-- SECTION 5: Apps That Defeated the Agent -->
+<div class="card">
+    <h2>5. Apps That Defeated the Agent</h2>
+    <p>These apps were blocked or partially blocked, with specific reasons:</p>
+    
+    <table style="width:auto; min-width:500px;">
+        <tr><th>App</th><th>Category</th><th>Blocker</th></tr>
+        <tr><td><strong>LinkedIn Ads</strong></td><td>Marketing, Ads, Email and Social</td><td>API access requires applying to the LinkedIn developer program and waiting for approval.</td></tr>
+        <tr><td><strong>Ecwid</strong></td><td>Ecommerce</td><td>API access requires a paid Ecwid store plan.</td></tr>
+        <tr><td><strong>Squarespace</strong></td><td>Ecommerce</td><td>Requires a paid Squarespace Commerce subscription to access API.</td></tr>
+        <tr><td><strong>Aircall</strong></td><td>Communications and Messaging</td><td>Requires a paid Aircall subscription (Essentials or Professional) to access the API.</td></tr>
+        <tr><td><strong>Google Ads</strong></td><td>Marketing, Ads, Email and Social</td><td>Requires admin approval for developer token.</td></tr>
+        <tr><td><strong>Salesforce Commerce Cloud</strong></td><td>Ecommerce</td><td>No free developer sandbox. Requires existing partner or customer contract for on-demand sandboxes.</td></tr>
+        <tr><td><strong>Amazon Selling Partner</strong></td><td>Ecommerce</td><td>Requires a Professional selling plan to register as a developer.</td></tr>
+        <tr><td><strong>DealCloud</strong></td><td>CRM and Sales</td><td>No self-serve access, free tier, or sandbox available without an enterprise contract and partner contact.</td></tr>
+        <tr><td><strong>Meta Ads</strong></td><td>Marketing, Ads, Email and Social</td><td>App Review required for full API access and production usage.</td></tr>
+        <tr><td><strong>PitchBook</strong></td><td>Finance and Fintech</td><td>API access requires enterprise contract and account manager contact.</td></tr>
+    </table>
+    
+    <h3>Partially Buildable (Need Workarounds)</h3>
+    <table style="width:auto; min-width:500px;">
+        <tr><th>App</th><th>Category</th><th>Issue</th></tr>
+        <tr><td>Copper</td><td>CRM and Sales</td><td>API access requires higher-tier paid plans (Professional/Business).</td></tr>
+        <tr><td>WhatsApp Business</td><td>Communications and Messaging</td><td>Requires Meta Business Verification and phone number registration to go live.</td></tr>
+        <tr><td>GoHighLevel</td><td>Marketing, Ads, Email and Social</td><td>Requires a paid plan or an approved test sub-account to develop.</td></tr>
+        <tr><td>Consensus</td><td>AI, Research and Media-native</td><td>Standard REST API is not self-serve; developers must apply and receive a custom quote.</td></tr>
+        <tr><td>Close</td><td>CRM and Sales</td><td>API access requires a paid subscription, though a 14-day free trial is available.</td></tr>
+        <tr><td>NotebookLM</td><td>AI, Research and Media-native</td><td>Official API requires enterprise licensing (Gemini Enterprise/Education Premium). Unofficial MCP relies on browser automation.</td></tr>
+        <tr><td>Smartsheet</td><td>Productivity and Project Management</td><td>API access requires a Business, Enterprise, or Advanced Work Management plan.</td></tr>
+        <tr><td>Otter AI</td><td>AI, Research and Media-native</td><td>API access requires an Otter Enterprise plan, restricting individual developers from self-serving.</td></tr>
+    </table>
+</div>
+
+<!-- SECTION 6: Agent Pipeline -->
+<div class="card">
+    <h2>6. Agent Pipeline Architecture</h2>
+    <p>This report was generated by an autonomous multi-agent pipeline. Each agent has a defined role and strict instructions.</p>
+    <div class="mermaid">
+    graph TD
+        A["📋 Input: App List (JSON)"] --> B["🔧 Lead Researcher (Orchestrator)"]
+        B --> C["👷 Research Workers (×5 parallel)"]
+        C --> D["🌐 Web Search & Doc Crawling"]
+        D --> E["📝 Extract Auth / Access / API / MCP"]
+        E --> F["💾 Save to data/raw/*.json (Pass 1)"]
+        F --> G["🔍 Verifier Agent (Stratified Sample)"]
+        G --> H["✅ Cross-check Evidence URLs"]
+        H --> I["📊 Aggregate Patterns (aggregate.py)"]
+        I --> J["📄 Generate Report (generate_report.js)"]
+        J --> K["🎯 output/report.html"]
+    </div>
+    <h3>Where a Human Was Needed</h3>
+    <ul>
+        <li><strong>Hallucinated GitHub repos:</strong> The agent occasionally invented MCP server URLs that returned 404 (e.g., Discord, Jira, Shopify). The verifier caught and corrected these.</li>
+        <li><strong>Misclassified access gates:</strong> Freemium models (Zoho Cliq, Airtable, Firecrawl) were sometimes classified as "none" or "gated" incorrectly.</li>
+        <li><strong>Enterprise approval flows:</strong> Apps like LinkedIn Ads, Amazon SP-API, Google Ads, and Salesforce Commerce have multi-step approval processes that the agent could identify but not navigate.</li>
+        <li><strong>Orchestration design:</strong> Humans defined the app list, JSON schema, batch sizes, and verification sampling strategy.</li>
+    </ul>
     <p><strong>Repository:</strong> <a href="https://github.com/HeyMeMukul/toolkit-composio" target="_blank">View the Source Code on GitHub</a></p>
 </div>
 
+<!-- SECTION 7: Verification Process -->
 <div class="card">
-    <h2>3. Verification Section</h2>
-    <p>To ensure data quality, a Verifier Agent checked a random sample of the 100 apps. The process involved a two-pass verification system.</p>
-    
-    <h3>Accuracy & V1-to-V2 Improvement</h3>
-    <p>The initial pass (V1) often caught mismatches due to outdated URLs or nuances in pricing tiers. In the second pass (V2), accuracy improved dramatically after the agent refined its scraping logic and corrected data points.</p>
-    
-    <h4>Sample Verification Misses (Honest Reporting)</h4>
+    <h2>7. Verification Process</h2>
+    <p>To ensure data quality, an independent Verifier Agent audited a stratified random sample:</p>
     <ul>
-<li><strong>waterfall-io:</strong> Field 'api_surface.docs_url' mismatch. Reason: Found the actual API documentation URL on the homepage. </li>
-<li><strong>jira:</strong> Field 'mcp_status' mismatch: mismatch: URL corrected from https://github.com/atlassian/mcp-server-jira (404) to https://github.com/atlassian/atlassian-mcp-server </li>
-<li><strong>firecrawl:</strong> Field 'access.gate_type' mismatch. Reason: Pricing page advertises a Free tier available. </li>
-<li><strong>discord:</strong> Field 'mcp_status.url' mismatch. Reason: The previous URL returned 404, replaced with an existing community MCP repo. </li>
-<li><strong>zoho-cliq:</strong> Field 'access.gate_type' mismatch. Reason: Zoho Cliq offers a free tier but is generally a paid product with a freemium model. Field 'api_surface.docs_url' mismatch. Reason: The previous API doc URL was a 403, updated to the actual REST API docs URL. </li>
-<li><strong>shopify:</strong> Field 'mcp_status' mismatch: mismatch: URL corrected from https://shopify.dev/docs/api/mcp (404) to https://shopify.dev/docs/apps/build/storefront-mcp </li>
-<li><strong>airtable:</strong> Field 'access.gate_type' mismatch. Reason: Airtable operates on a freemium model with various paid plans. </li>
-<li><strong>mermaid-cli:</strong> </li>
-<li><strong>podio:</strong> Field 'access' mismatch: mismatch: evidence_url 301 redirected, corrected to https://developers.podio.com Field 'mcp_status' mismatch: mismatch: corrected from exists:false to exists:true, community, url: https://github.com/stoskov/podio-mcp </li>
-
+        <li>Randomly sampled <strong>20 apps</strong> across all 10 categories (2 per category + uncertain records).</li>
+        <li>Compared every field against official documentation by re-fetching evidence URLs.</li>
+        <li>Verified authentication methods, gating classification, and docs URLs.</li>
+        <li>Corrected 11 mismatches across 100 fields checked.</li>
     </ul>
-    <p><em>Improvement explicitly stated:</em> As shown in the logs, running accuracy for Pass 1 hovered around 80-92%, but running accuracy for Pass 2 achieved <strong>100%</strong> on the corrected fields, demonstrating the value of the self-reflection and verification loop.</p>
+    <div class="grid">
+        <div style="text-align:center;">
+            <div class="stat-number">89.0%</div>
+            <div class="stat-label">Pass 1 Accuracy (Pre-correction)</div>
+        </div>
+        <div style="text-align:center;">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Pass 2 Accuracy (Post-correction)</div>
+        </div>
+    </div>
+    <div class="caveat">
+        ⚠️ <strong>Important caveat:</strong> Verified on a stratified sample of 20/100 apps; pass-2 reflects post-correction accuracy on that sample, not a guarantee the other 80 are error-free.
+    </div>
+    
 </div>
 
+<!-- SECTION 8: 100-App Matrix -->
 <div class="card">
-    <h2>4. 100-App Table</h2>
+    <h2>8. 100-App Matrix</h2>
+    <div style="overflow-x:auto;">
     <table>
         <thead>
             <tr>
-                <th>App Name</th>
+                <th>#</th>
+                <th>App</th>
                 <th>Category</th>
-                <th>Auth Methods</th>
-                <th>Access Mode</th>
-                <th>API Breadth</th>
-                <th>MCP Status</th>
+                <th>One-Liner</th>
+                <th>Auth</th>
+                <th>Access</th>
+                <th>API</th>
+                <th>MCP</th>
                 <th>Buildability</th>
+                <th>Evidence</th>
+                <th>Confidence</th>
             </tr>
         </thead>
         <tbody>
-
             <tr>
+                <td>1</td>
                 <td><strong>Ahrefs</strong></td>
                 <td>Data, SEO and Scraping</td>
-                <td><span class='badge badge-success'>token</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Ahrefs offers a powerful API and official MCP server for core SEO datasets including Site Explorer, Keywords Explorer, and Rank Tracker.</td>
+                <td><span class="badge badge-success">token</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://ahrefs.com/pricing" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>2</td>
                 <td><strong>Aircall</strong></td>
                 <td>Communications and Messaging</td>
-                <td><span class='badge badge-success'>basic</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Cloud-based call center software for modern businesses.</td>
+                <td><span class="badge badge-success">basic</span> <span class="badge badge-success">oauth2</span></td>
                 <td>gated</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-danger'>blocked</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-danger">blocked</span></td>
+                <td><a href="https://developer.aircall.io/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>3</td>
                 <td><strong>Airtable</strong></td>
                 <td>Productivity and Project Management</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Low-code platform for building collaborative apps.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://airtable.com/developers/web/api/introduction" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>4</td>
                 <td><strong>Amazon Selling Partner</strong></td>
                 <td>Ecommerce</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">API for Amazon sellers to manage orders, inventory, and pricing programmatically.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span></td>
                 <td>gated</td>
                 <td>broad</td>
-                <td><span class='badge badge-danger'>None</span></td>
-                <td><span class='badge badge-danger'>blocked</span></td>
+                <td><span class="badge badge-mcp-none">None</span></td>
+                <td><span class="badge badge-danger">blocked</span></td>
+                <td><a href="https://developer-docs.amazon.com/sp-api" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>5</td>
                 <td><strong>Apify</strong></td>
                 <td>Data, SEO and Scraping</td>
-                <td><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Platform for web scraping and data extraction with a vast library of pre-built Actors and an official MCP server.</td>
+                <td><span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://apify.com/pricing" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>6</td>
                 <td><strong>Asana</strong></td>
                 <td>Productivity and Project Management</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Manage your team's work, projects, &amp; tasks online.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developers.asana.com/docs/authentication" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>7</td>
                 <td><strong>Attio</strong></td>
                 <td>CRM and Sales</td>
-                <td><span class='badge badge-success'>api_key</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Attio is a fully customizable CRM workspace built for modern, data-driven teams.</td>
+                <td><span class="badge badge-success">api_key</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://build.attio.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>8</td>
                 <td><strong>BigCommerce</strong></td>
                 <td>Ecommerce</td>
-                <td><span class='badge badge-success'>token</span><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">A leading Open SaaS ecommerce platform for fast-growing and established brands.</td>
+                <td><span class="badge badge-success">token</span> <span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://support.bigcommerce.com/s/article/Starting-a-Bigcommerce-Trial" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>9</td>
                 <td><strong>Binance</strong></td>
                 <td>Finance and Fintech</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Cryptocurrency exchange API for trading and market data.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://binance-docs.github.io/apidocs/spot/en/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>10</td>
                 <td><strong>Brex</strong></td>
                 <td>Finance and Fintech</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Corporate cards, expense management, and business accounts.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developer.brex.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>11</td>
                 <td><strong>Bright Data</strong></td>
                 <td>Data, SEO and Scraping</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Comprehensive platform for web data, proxy services, and web unlocker APIs.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://brightdata.com/pricing" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>12</td>
                 <td><strong>Clay</strong></td>
                 <td>Data, SEO and Scraping</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Data enrichment and sales automation platform connecting external tools and databases.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://clay.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>13</td>
                 <td><strong>ClickUp</strong></td>
                 <td>Productivity and Project Management</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">ClickUp provides a comprehensive REST API and official MCP server for seamless AI integration.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://clickup.com/api" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>14</td>
                 <td><strong>Close</strong></td>
                 <td>CRM and Sales</td>
-                <td><span class='badge badge-success'>basic</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">An inside sales CRM optimized for outbound sales teams.</td>
+                <td><span class="badge badge-success">basic</span> <span class="badge badge-success">oauth2</span></td>
                 <td>gated</td>
                 <td>broad</td>
-                <td><span class='badge badge-danger'>None</span></td>
-                <td><span class='badge badge-danger'>partial</span></td>
+                <td><span class="badge badge-mcp-none">None</span></td>
+                <td><span class="badge badge-warning">partial</span></td>
+                <td><a href="https://close.com/pricing" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>15</td>
                 <td><strong>Cloudflare</strong></td>
                 <td>Developer, Infra and Data platforms</td>
-                <td><span class='badge badge-success'>token</span><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Cloudflare offers an extensive API for managing DNS, domains, workers, and CDN services.</td>
+                <td><span class="badge badge-success">token</span> <span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developers.cloudflare.com/api/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>16</td>
                 <td><strong>Coda</strong></td>
                 <td>Productivity and Project Management</td>
-                <td><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Coda offers a REST API with Bearer token authentication and an official hosted MCP server.</td>
+                <td><span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://coda.io/developers" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>17</td>
                 <td><strong>Consensus</strong></td>
                 <td>AI, Research and Media-native</td>
-                <td><span class='badge badge-success'>api_key</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">An AI-powered academic search engine that finds and synthesizes answers from peer-reviewed scientific papers.</td>
+                <td><span class="badge badge-success">api_key</span> <span class="badge badge-success">oauth2</span></td>
                 <td>gated</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-danger'>partial</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-warning">partial</span></td>
+                <td><a href="https://consensus.app" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>18</td>
                 <td><strong>Copper</strong></td>
                 <td>CRM and Sales</td>
-                <td><span class='badge badge-success'>api_key</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">A CRM designed to integrate seamlessly with Google Workspace.</td>
+                <td><span class="badge badge-success">api_key</span> <span class="badge badge-success">oauth2</span></td>
                 <td>gated</td>
                 <td>broad</td>
-                <td><span class='badge badge-danger'>None</span></td>
-                <td><span class='badge badge-danger'>partial</span></td>
+                <td><span class="badge badge-mcp-none">None</span></td>
+                <td><span class="badge badge-warning">partial</span></td>
+                <td><a href="https://copper.com/pricing" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>19</td>
                 <td><strong>Datadog</strong></td>
                 <td>Developer, Infra and Data platforms</td>
-                <td><span class='badge badge-success'>api_key</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Cloud-scale monitoring and security platform for developers and IT operations teams.</td>
+                <td><span class="badge badge-success">api_key</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://www.datadoghq.com/pricing/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>20</td>
                 <td><strong>DataForSEO</strong></td>
                 <td>Data, SEO and Scraping</td>
-                <td><span class='badge badge-success'>basic</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">DataForSEO provides a comprehensive suite of SEO and marketing APIs for SERP, keyword data, and domain analytics.</td>
+                <td><span class="badge badge-success">basic</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://dataforseo.com/pricing" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>21</td>
                 <td><strong>DealCloud</strong></td>
                 <td>CRM and Sales</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">An enterprise CRM and deal management platform for financial services.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>gated</td>
                 <td>broad</td>
-                <td><span class='badge badge-danger'>None</span></td>
-                <td><span class='badge badge-danger'>blocked</span></td>
+                <td><span class="badge badge-mcp-none">None</span></td>
+                <td><span class="badge badge-danger">blocked</span></td>
+                <td><a href="https://developer.dealcloud.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>22</td>
                 <td><strong>Devin</strong></td>
                 <td>AI, Research and Media-native</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Devin is the AI software engineer, built to help ambitious engineering teams crush their backlogs.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>gated</td>
                 <td>moderate</td>
-                <td><span class='badge badge-danger'>None</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-none">None</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://docs.devin.ai" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>23</td>
                 <td><strong>Discord</strong></td>
                 <td>Communications and Messaging</td>
-                <td><span class='badge badge-success'>token</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Voice, video and text chat app.</td>
+                <td><span class="badge badge-success">token</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://discord.com/developers/docs/getting-started" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>24</td>
                 <td><strong>Ecwid</strong></td>
                 <td>Ecommerce</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">E-commerce widget and platform for small businesses.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span></td>
                 <td>gated</td>
                 <td>broad</td>
-                <td><span class='badge badge-danger'>None</span></td>
-                <td><span class='badge badge-danger'>blocked</span></td>
+                <td><span class="badge badge-mcp-none">None</span></td>
+                <td><span class="badge badge-danger">blocked</span></td>
+                <td><a href="https://docs.ecwid.com/reference/overview" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>25</td>
                 <td><strong>fanbasis</strong></td>
                 <td>Ecommerce</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Monetization and payments platform for creators, recently rebranded to Commas.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-danger'>None</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-none">None</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://fanbasis.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>26</td>
                 <td><strong>Fathom</strong></td>
                 <td>AI, Research and Media-native</td>
-                <td><span class='badge badge-success'>api_key</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">An AI meeting assistant that records, transcribes, highlights, and summarizes meetings.</td>
+                <td><span class="badge badge-success">api_key</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://docs.fathom.video/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>27</td>
                 <td><strong>Firecrawl</strong></td>
                 <td>Data, SEO and Scraping</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Web scraping and crawling API designed to turn websites into LLM-ready formats like Markdown or JSON.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://www.firecrawl.dev/pricing" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>28</td>
                 <td><strong>Freshdesk</strong></td>
                 <td>Support and Helpdesk</td>
-                <td><span class='badge badge-success'>basic</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Customer service software providing helpdesk support and ticketing.</td>
+                <td><span class="badge badge-success">basic</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://freshdesk.com/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>29</td>
                 <td><strong>Front</strong></td>
                 <td>Support and Helpdesk</td>
-                <td><span class='badge badge-success'>token</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Customer communication platform that combines helpdesk functionality with shared inboxes.</td>
+                <td><span class="badge badge-success">token</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://dev.frontapp.com/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>30</td>
                 <td><strong>GitHub</strong></td>
                 <td>Developer, Infra and Data platforms</td>
-                <td><span class='badge badge-success'>token</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">GitHub provides an API for automating workflows, managing repositories, and interacting with its developer platform.</td>
+                <td><span class="badge badge-success">token</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://docs.github.com/en/rest" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>31</td>
                 <td><strong>Gladly</strong></td>
                 <td>Support and Helpdesk</td>
-                <td><span class='badge badge-success'>basic</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">A radically personal customer service platform built around people, not tickets.</td>
+                <td><span class="badge badge-success">basic</span></td>
                 <td>gated</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://www.gladly.ai/pricing/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>32</td>
                 <td><strong>GoHighLevel</strong></td>
                 <td>Marketing, Ads, Email and Social</td>
-                <td><span class='badge badge-success'>token</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">GoHighLevel is an all-in-one sales and marketing platform for agencies, offering CRM, pipelines, and automation.</td>
+                <td><span class="badge badge-success">token</span> <span class="badge badge-success">oauth2</span></td>
                 <td>gated</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-danger'>partial</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-warning">partial</span></td>
+                <td><a href="https://marketplace.gohighlevel.com/docs/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>33</td>
                 <td><strong>Google Ads</strong></td>
                 <td>Marketing, Ads, Email and Social</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Google Ads API allows developers to manage and automate Google Ads campaigns.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>gated</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-danger'>blocked</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-danger">blocked</span></td>
+                <td><a href="https://developers.google.com/google-ads/api/docs/first-call/dev-token" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>34</td>
                 <td><strong>Gorgias</strong></td>
                 <td>Support and Helpdesk</td>
-                <td><span class='badge badge-success'>basic</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Ecommerce helpdesk that turns customer service into a profit center.</td>
+                <td><span class="badge badge-success">basic</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://www.gorgias.com/pricing" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>35</td>
                 <td><strong>Grain</strong></td>
                 <td>AI, Research and Media-native</td>
-                <td><span class='badge badge-success'>token</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Integrate, automate, and analyze meeting data using Grain's API.</td>
+                <td><span class="badge badge-success">token</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://grain.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>36</td>
                 <td><strong>Gumroad</strong></td>
                 <td>Ecommerce</td>
-                <td><span class='badge badge-success'>api_key</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">E-commerce platform for creators to sell digital products.</td>
+                <td><span class="badge badge-success">api_key</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-danger'>None</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-none">None</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://app.gumroad.com/api" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>37</td>
                 <td><strong>Harvest</strong></td>
                 <td>Productivity and Project Management</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Harvest offers a REST API with free access and an official MCP server for time-tracking integrations.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://getharvest.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>38</td>
                 <td><strong>Help Scout</strong></td>
                 <td>Support and Helpdesk</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>basic</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">A customer support platform with shared inboxes, knowledge base, and live chat.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">basic</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://www.helpscout.com/pricing" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>39</td>
                 <td><strong>higgsfield</strong></td>
                 <td>AI, Research and Media-native</td>
-                <td><span class='badge badge-success'>other</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Run Higgsfield from the command line in any MCP-compatible CLI agent to generate images and videos.</td>
+                <td><span class="badge badge-success">other</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://higgsfield.ai/cli" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>40</td>
                 <td><strong>HubSpot</strong></td>
                 <td>CRM and Sales</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">HubSpot offers a full platform of marketing, sales, customer service, and CRM software.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developers.hubspot.com/get-started" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>41</td>
                 <td><strong>Intercom</strong></td>
                 <td>Support and Helpdesk</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Customer communications platform and helpdesk.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developers.intercom.com/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>42</td>
                 <td><strong>iPayX</strong></td>
                 <td>Finance and Fintech</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">MCP-native FX audit tool and payment protocol.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://ipayx.ai/docs" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>43</td>
                 <td><strong>Jira</strong></td>
                 <td>Productivity and Project Management</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>basic</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Issue and project tracking software.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">basic</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>44</td>
                 <td><strong>Klaviyo</strong></td>
                 <td>Marketing, Ads, Email and Social</td>
-                <td><span class='badge badge-success'>api_key</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">An email and SMS marketing automation platform.</td>
+                <td><span class="badge badge-success">api_key</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developers.klaviyo.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>45</td>
                 <td><strong>Lark (Larksuite)</strong></td>
                 <td>Communications and Messaging</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">An all-in-one collaboration platform and productivity superapp that unifies communication and collaboration tools.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://open.larksuite.com/document/home" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>46</td>
                 <td><strong>Linear</strong></td>
                 <td>Productivity and Project Management</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">A better way to build products.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developers.linear.app/docs/graphql/working-with-the-graphql-api" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>47</td>
                 <td><strong>LinkedIn Ads</strong></td>
                 <td>Marketing, Ads, Email and Social</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">LinkedIn Marketing API allows developers to manage ads, retrieve analytics, and automate campaign operations.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>gated</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-danger'>blocked</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-danger">blocked</span></td>
+                <td><a href="https://learn.microsoft.com/en-us/linkedin/marketing/getting-started" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>48</td>
                 <td><strong>LiveAgent</strong></td>
                 <td>Support and Helpdesk</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">A fully-featured help desk and live chat software that helps you bring personalization to your customer interactions.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://www.liveagent.com/pricing/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>49</td>
                 <td><strong>Magento (Adobe Commerce)</strong></td>
                 <td>Ecommerce</td>
-                <td><span class='badge badge-success'>token</span><span class='badge badge-success'>other</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">A flexible, open-source and enterprise eCommerce platform.</td>
+                <td><span class="badge badge-success">token</span> <span class="badge badge-success">other</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://business.adobe.com/products/magento/open-source.html" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>50</td>
                 <td><strong>Mailchimp</strong></td>
                 <td>Marketing, Ads, Email and Social</td>
-                <td><span class='badge badge-success'>api_key</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Mailchimp API allows you to sync contacts, manage audiences, and send marketing campaigns.</td>
+                <td><span class="badge badge-success">api_key</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://mailchimp.com/developer/marketing/api/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>51</td>
                 <td><strong>Mermaid CLI</strong></td>
                 <td>AI, Research and Media-native</td>
-                <td><span class='badge badge-success'>other</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Command line tool for the Mermaid library to convert diagram definitions into visual formats.</td>
+                <td><span class="badge badge-success">other</span></td>
                 <td>self_serve</td>
                 <td>narrow</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://github.com/mermaid-js/mermaid-cli" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>52</td>
                 <td><strong>Meta Ads</strong></td>
                 <td>Marketing, Ads, Email and Social</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Meta Marketing API enables developers to programmatically manage and report on ads across Meta platforms.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>gated</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-danger'>blocked</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-danger">blocked</span></td>
+                <td><a href="https://developers.facebook.com/docs/marketing-apis" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>53</td>
                 <td><strong>Monday.com</strong></td>
                 <td>Productivity and Project Management</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Monday.com offers robust developer documentation and officially supported MCP integration alongside its core GraphQL API.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developer.monday.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>54</td>
                 <td><strong>MongoDB Atlas</strong></td>
                 <td>Developer, Infra and Data platforms</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Fully managed cloud database service developed by the creators of MongoDB.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://www.mongodb.com/pricing" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>55</td>
                 <td><strong>MrScraper</strong></td>
                 <td>Data, SEO and Scraping</td>
-                <td><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">AI-powered web scraping platform with a built-in MCP server for automated data extraction.</td>
+                <td><span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://mrscraper.com/pricing" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>56</td>
                 <td><strong>Neo4j</strong></td>
                 <td>Developer, Infra and Data platforms</td>
-                <td><span class='badge badge-success'>basic</span><span class='badge badge-success'>api_key</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Graph database platform for connected data and graph-powered AI.</td>
+                <td><span class="badge badge-success">basic</span> <span class="badge badge-success">api_key</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://neo4j.com/pricing/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>57</td>
                 <td><strong>Netlify</strong></td>
                 <td>Developer, Infra and Data platforms</td>
-                <td><span class='badge badge-success'>token</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Netlify provides a REST API to manage sites, deployments, and account resources.</td>
+                <td><span class="badge badge-success">token</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://docs.netlify.com/api/get-started/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>58</td>
                 <td><strong>NotebookLM</strong></td>
                 <td>AI, Research and Media-native</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">An AI-powered research and note-taking assistant by Google that grounds its responses in user-provided documents.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>gated</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-danger'>partial</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-warning">partial</span></td>
+                <td><a href="https://cloud.google.com/gemini" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>59</td>
                 <td><strong>Notion</strong></td>
                 <td>Productivity and Project Management</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Connected workspace for your wiki, docs &amp; projects.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developers.notion.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>60</td>
                 <td><strong>Otter AI</strong></td>
                 <td>AI, Research and Media-native</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">An AI meeting assistant that records audio, writes notes, captures slides, and generates summaries.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>gated</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-danger'>partial</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-warning">partial</span></td>
+                <td><a href="https://help.otter.ai" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>61</td>
                 <td><strong>Paygent Connect</strong></td>
                 <td>Finance and Fintech</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">AI cost management, usage-based billing, and payment gateway adapter.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://paygent.to" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>62</td>
                 <td><strong>Pinterest</strong></td>
                 <td>Marketing, Ads, Email and Social</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">A visual discovery engine for finding ideas like recipes, home and style inspiration.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developers.pinterest.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>63</td>
                 <td><strong>Pipedrive</strong></td>
                 <td>CRM and Sales</td>
-                <td><span class='badge badge-success'>api_key</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Pipedrive is a sales-focused CRM software designed by salespeople to help small businesses drive revenue.</td>
+                <td><span class="badge badge-success">api_key</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developers.pipedrive.com/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>64</td>
                 <td><strong>PitchBook</strong></td>
                 <td>Finance and Fintech</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Financial data provider covering global venture capital, private equity, and public markets.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>gated</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-danger'>blocked</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-danger">blocked</span></td>
+                <td><a href="https://pitchbook.com/products/direct-data" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>65</td>
                 <td><strong>Plaid</strong></td>
                 <td>Finance and Fintech</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Data network powering fintech tools.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://plaid.com/docs/api/tokens/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>66</td>
                 <td><strong>Plain</strong></td>
                 <td>Support and Helpdesk</td>
-                <td><span class='badge badge-success'>token</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Modern, API-first support platform designed for B2B teams.</td>
+                <td><span class="badge badge-success">token</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://www.plain.com/pricing" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>67</td>
                 <td><strong>Podio</strong></td>
                 <td>CRM and Sales</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">A flexible work management and collaboration platform.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developers.podio.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>68</td>
                 <td><strong>Pumble</strong></td>
                 <td>Communications and Messaging</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">A free business communication and team messaging app that enables teams to collaborate through channels, direct messages, and video conferencing.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://pumble.com/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>69</td>
                 <td><strong>Pylon</strong></td>
                 <td>Support and Helpdesk</td>
-                <td><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Agentic B2B customer support platform and issue tracking.</td>
+                <td><span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://usepylon.com/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>70</td>
                 <td><strong>QuickBooks</strong></td>
                 <td>Finance and Fintech</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Accounting software package developed and marketed by Intuit.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developer.intuit.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>71</td>
                 <td><strong>Ramp</strong></td>
                 <td>Finance and Fintech</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Finance automation platform and corporate card.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://docs.ramp.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>72</td>
                 <td><strong>Reducto</strong></td>
                 <td>AI, Research and Media-native</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">An agentic document processing platform that parses and extracts structured data from complex unstructured files.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://studio.reducto.ai" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>73</td>
                 <td><strong>Salesforce</strong></td>
                 <td>CRM and Sales</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Salesforce is a leading cloud-based CRM platform that helps businesses manage customer relationships and sales.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developer.salesforce.com/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>74</td>
                 <td><strong>Salesforce Commerce Cloud</strong></td>
                 <td>Ecommerce</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Enterprise B2C and B2B commerce platform with powerful AI and personalized shopping features.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span></td>
                 <td>gated</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-danger'>blocked</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-danger">blocked</span></td>
+                <td><a href="https://developer.salesforce.com/docs/commerce/b2c-commerce/guide/b2c-commerce-get-started.html" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>75</td>
                 <td><strong>SE Ranking</strong></td>
                 <td>Data, SEO and Scraping</td>
-                <td><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">SE Ranking offers an API for SEO and project management data, including keyword research and backlink analysis.</td>
+                <td><span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://seranking.com/pricing" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>76</td>
                 <td><strong>SendGrid</strong></td>
                 <td>Marketing, Ads, Email and Social</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">A cloud-based customer communication platform that delivers transactional and marketing email.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://sendgrid.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>77</td>
                 <td><strong>Sentry</strong></td>
                 <td>Developer, Infra and Data platforms</td>
-                <td><span class='badge badge-success'>token</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Developer-first error tracking and performance monitoring platform.</td>
+                <td><span class="badge badge-success">token</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://sentry.io/pricing/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>78</td>
                 <td><strong>Sherlock</strong></td>
                 <td>Data, SEO and Scraping</td>
-                <td><span class='badge badge-success'>other</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Open-source OSINT tool designed to find social media accounts by username across hundreds of platforms.</td>
+                <td><span class="badge badge-success">other</span></td>
                 <td>self_serve</td>
                 <td>narrow</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://github.com/sherlock-project/sherlock" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>79</td>
                 <td><strong>Shopify</strong></td>
                 <td>Ecommerce</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">A leading commerce platform that allows anyone to set up an online store and sell their products.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://shopify.com/partners" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>80</td>
                 <td><strong>Slack</strong></td>
                 <td>Communications and Messaging</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Slack is the AI-powered platform for work, bringing all your conversations, apps and customers together in one place.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://api.slack.com/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>81</td>
                 <td><strong>Smartsheet</strong></td>
                 <td>Productivity and Project Management</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Smartsheet provides a robust REST API and MCP server, but API access requires a paid plan.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span></td>
                 <td>gated</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-danger'>partial</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-warning">partial</span></td>
+                <td><a href="https://smartsheet.com/pricing" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>82</td>
                 <td><strong>Snowflake</strong></td>
                 <td>Developer, Infra and Data platforms</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span><span class='badge badge-success'>other</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Cloud data platform offering data warehousing, data lakes, and data engineering capabilities.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span> <span class="badge badge-success">other</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://www.snowflake.com/pricing/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>83</td>
                 <td><strong>Squarespace</strong></td>
                 <td>Ecommerce</td>
-                <td><span class='badge badge-success'>api_key</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Website builder and e-commerce platform.</td>
+                <td><span class="badge badge-success">api_key</span> <span class="badge badge-success">oauth2</span></td>
                 <td>gated</td>
                 <td>moderate</td>
-                <td><span class='badge badge-danger'>None</span></td>
-                <td><span class='badge badge-danger'>blocked</span></td>
+                <td><span class="badge badge-mcp-none">None</span></td>
+                <td><span class="badge badge-danger">blocked</span></td>
+                <td><a href="https://developers.squarespace.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>84</td>
                 <td><strong>Stripe</strong></td>
                 <td>Finance and Fintech</td>
-                <td><span class='badge badge-success'>api_key</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Payments infrastructure for the internet.</td>
+                <td><span class="badge badge-success">api_key</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://stripe.com/docs/api" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>85</td>
                 <td><strong>Supabase</strong></td>
                 <td>Developer, Infra and Data platforms</td>
-                <td><span class='badge badge-success'>api_key</span><span class='badge badge-success'>token</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Supabase provides an open source Firebase alternative with a Postgres database, Auth, and APIs.</td>
+                <td><span class="badge badge-success">api_key</span> <span class="badge badge-success">token</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://supabase.com/pricing" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>86</td>
                 <td><strong>systeme.io</strong></td>
                 <td>Marketing, Ads, Email and Social</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">An all-in-one marketing platform to build sales funnels, webinars, and manage emails.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://systeme.io/api" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>87</td>
                 <td><strong>Telegram</strong></td>
                 <td>Communications and Messaging</td>
-                <td><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Cloud-based mobile and desktop messaging app.</td>
+                <td><span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://core.telegram.org/bots/tutorial" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>88</td>
                 <td><strong>Threads (Meta)</strong></td>
                 <td>Marketing, Ads, Email and Social</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">A text-based conversation app built by the Instagram team.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developers.facebook.com/docs/threads" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>89</td>
                 <td><strong>Twenty</strong></td>
                 <td>CRM and Sales</td>
-                <td><span class='badge badge-success'>api_key</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Twenty is an open-source CRM that allows businesses to manage and automate customer relationships.</td>
+                <td><span class="badge badge-success">api_key</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://twenty.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>90</td>
                 <td><strong>Twilio</strong></td>
                 <td>Communications and Messaging</td>
-                <td><span class='badge badge-success'>basic</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Twilio is a cloud communications platform that provides programmable APIs for building and scaling real-time customer engagement experiences.</td>
+                <td><span class="badge badge-success">basic</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://www.twilio.com/docs/iam/api-keys" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>91</td>
                 <td><strong>Vercel</strong></td>
                 <td>Developer, Infra and Data platforms</td>
-                <td><span class='badge badge-success'>token</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Vercel provides a REST API to manage deployments, domains, and environment variables.</td>
+                <td><span class="badge badge-success">token</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://vercel.com/docs/rest-api" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>92</td>
                 <td><strong>Vonage</strong></td>
                 <td>Communications and Messaging</td>
-                <td><span class='badge badge-success'>api_key</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Cloud communications platform APIs for voice, SMS, and video.</td>
+                <td><span class="badge badge-success">api_key</span> <span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developer.vonage.com/sign-up" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>93</td>
                 <td><strong>Waterfall.io</strong></td>
                 <td>Data, SEO and Scraping</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">B2B data enrichment service aggregating data from 30+ vendors for verified contacts.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-danger'>None</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-none">None</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://waterfall.io" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>94</td>
                 <td><strong>WhatsApp Business</strong></td>
                 <td>Communications and Messaging</td>
-                <td><span class='badge badge-success'>token</span><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">API to communicate with WhatsApp users at scale.</td>
+                <td><span class="badge badge-success">token</span> <span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-danger'>partial</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-warning">partial</span></td>
+                <td><a href="https://developers.facebook.com/docs/whatsapp/cloud-api/get-started" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>95</td>
                 <td><strong>WooCommerce</strong></td>
                 <td>Ecommerce</td>
-                <td><span class='badge badge-success'>basic</span><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>token</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">A customizable, open-source ecommerce platform built on WordPress.</td>
+                <td><span class="badge badge-success">basic</span> <span class="badge badge-success">oauth2</span> <span class="badge badge-success">token</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://wordpress.org/plugins/woocommerce/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>96</td>
                 <td><strong>Xero</strong></td>
                 <td>Finance and Fintech</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Cloud-based accounting software platform for small businesses.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://developer.xero.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>97</td>
                 <td><strong>YouTube Transcript</strong></td>
                 <td>AI, Research and Media-native</td>
-                <td><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Extract full, timestamped transcripts from YouTube videos in a structured JSON format.</td>
+                <td><span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>moderate</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://transcriptapi.com" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
             <tr>
+                <td>98</td>
                 <td><strong>Zendesk</strong></td>
                 <td>Support and Helpdesk</td>
-                <td><span class='badge badge-success'>oauth2</span><span class='badge badge-success'>api_key</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Customer service software and support ticketing system.</td>
+                <td><span class="badge badge-success">oauth2</span> <span class="badge badge-success">api_key</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (community)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-community">Community</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://www.zendesk.com/register/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>99</td>
                 <td><strong>Zoho Cliq</strong></td>
                 <td>Communications and Messaging</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">Team communication software that organizes conversations, workflows, and meetings in one place to boost productivity.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-success'>Exists (official)</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-official">Official</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://www.zoho.com/cliq/help/api/" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-verified">Verified</span></td>
             </tr>
-    
             <tr>
+                <td>100</td>
                 <td><strong>Zoho CRM</strong></td>
                 <td>CRM and Sales</td>
-                <td><span class='badge badge-success'>oauth2</span></td>
+                <td style="max-width:200px;font-size:0.78rem;">A comprehensive customer relationship management platform.</td>
+                <td><span class="badge badge-success">oauth2</span></td>
                 <td>self_serve</td>
                 <td>broad</td>
-                <td><span class='badge badge-danger'>None</span></td>
-                <td><span class='badge badge-success'>ready</span></td>
+                <td><span class="badge badge-mcp-none">None</span></td>
+                <td><span class="badge badge-success">ready</span></td>
+                <td><a href="https://www.zoho.com/crm/developer/docs/api/v8/api-limits.html" target="_blank" class="evidence-link">🔗</a></td>
+                <td><span class="badge badge-agent-only">Agent Only</span></td>
             </tr>
-    
         </tbody>
     </table>
+    </div>
 </div>
 
 </body>
