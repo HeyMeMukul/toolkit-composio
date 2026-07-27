@@ -1,0 +1,162 @@
+{
+  "auth_dominance": {
+    "oauth2": 65,
+    "api_key": 38,
+    "token": 38,
+    "basic": 11,
+    "other": 5
+  },
+  "overall_access": {
+    "self_serve": 81,
+    "gated": 19
+  },
+  "category_access": {
+    "Marketing, Ads, Email and Social": {
+      "self_serve": 6,
+      "gated": 4
+    },
+    "AI, Research and Media-native": {
+      "self_serve": 6,
+      "gated": 4
+    },
+    "Data, SEO and Scraping": {
+      "self_serve": 10
+    },
+    "Communications and Messaging": {
+      "self_serve": 9,
+      "gated": 1
+    },
+    "Support and Helpdesk": {
+      "self_serve": 9,
+      "gated": 1
+    },
+    "CRM and Sales": {
+      "gated": 3,
+      "self_serve": 7
+    },
+    "Finance and Fintech": {
+      "self_serve": 9,
+      "gated": 1
+    },
+    "Ecommerce": {
+      "gated": 4,
+      "self_serve": 6
+    },
+    "Developer, Infra and Data platforms": {
+      "self_serve": 10
+    },
+    "Productivity and Project Management": {
+      "self_serve": 9,
+      "gated": 1
+    }
+  },
+  "common_blockers": {
+    "API access requires applying to the LinkedIn developer program and waiting for approval.": 1,
+    "API access requires a paid Ecwid store plan.": 1,
+    "Requires a paid Squarespace Commerce subscription to access API.": 1,
+    "Requires a paid Aircall subscription (Essentials or Professional) to access the API.": 1,
+    "Requires admin approval for developer token.": 1,
+    "No free developer sandbox. Requires existing partner or customer contract for on-demand sandboxes.": 1,
+    "Requires a Professional selling plan to register as a developer.": 1,
+    "No self-serve access, free tier, or sandbox available without an enterprise contract and partner contact.": 1,
+    "App Review required for full API access and production usage.": 1,
+    "API access requires enterprise contract and account manager contact.": 1
+  },
+  "easy_wins": [
+    "Pinterest",
+    "Mermaid CLI",
+    "DataForSEO",
+    "Vonage",
+    "Intercom",
+    "Lark (Larksuite)",
+    "Telegram",
+    "Binance",
+    "Grain",
+    "Snowflake",
+    "Pylon",
+    "MrScraper",
+    "Threads (Meta)",
+    "Firecrawl",
+    "Gladly",
+    "Brex",
+    "Salesforce",
+    "Attio",
+    "Gumroad",
+    "Bright Data",
+    "Plain",
+    "Asana",
+    "GitHub",
+    "Cloudflare",
+    "Clay",
+    "Mailchimp",
+    "Freshdesk",
+    "Front",
+    "Reducto",
+    "fanbasis",
+    "QuickBooks",
+    "SE Ranking",
+    "ClickUp",
+    "Help Scout",
+    "Netlify",
+    "Paygent Connect",
+    "Linear",
+    "Podio",
+    "iPayX",
+    "LiveAgent",
+    "Xero",
+    "Pumble",
+    "Coda",
+    "systeme.io",
+    "SendGrid",
+    "Ramp",
+    "Harvest",
+    "Plaid",
+    "Apify",
+    "Monday.com",
+    "Slack",
+    "Zoho Cliq",
+    "Jira",
+    "Sentry",
+    "Stripe",
+    "BigCommerce",
+    "Waterfall.io",
+    "HubSpot",
+    "Pipedrive",
+    "Neo4j",
+    "MongoDB Atlas",
+    "Discord",
+    "Magento (Adobe Commerce)",
+    "Vercel",
+    "Zendesk",
+    "Fathom",
+    "Airtable",
+    "Twenty",
+    "Sherlock",
+    "YouTube Transcript",
+    "Datadog",
+    "Notion",
+    "higgsfield",
+    "Twilio",
+    "Shopify",
+    "Ahrefs",
+    "Zoho CRM",
+    "Klaviyo",
+    "Supabase",
+    "Devin",
+    "Gorgias",
+    "WooCommerce"
+  ],
+  "blocked_apps": [
+    "LinkedIn Ads",
+    "Ecwid",
+    "Squarespace",
+    "Aircall",
+    "Google Ads",
+    "Salesforce Commerce Cloud",
+    "Amazon Selling Partner",
+    "DealCloud",
+    "Meta Ads",
+    "PitchBook"
+  ],
+  "total_analyzed": 100
+}

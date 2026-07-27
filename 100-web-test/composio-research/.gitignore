@@ -1,0 +1,8 @@
+data/raw/*.json
+data/verified/*.json
+data/evidence/*
+!data/evidence/.gitkeep
+!data/raw/.gitkeep
+!data/verified/.gitkeep
+node_modules/
+.env

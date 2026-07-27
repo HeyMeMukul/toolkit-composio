@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "composio": {
+      "serverUrl": "https://backend.composio.dev/v3/mcp/YOUR_SERVER_ID?user_id=user_gf9by",
+      "headers": {
+        "x-api-key": "${COMPOSIO_API_KEY}"
+      }
+    }
+  }
+}

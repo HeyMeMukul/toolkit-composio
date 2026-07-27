@@ -1,0 +1,702 @@
+{
+  "salesforce": {
+    "status": "completed",
+    "name": "Salesforce",
+    "category": "CRM and Sales",
+    "website": "salesforce.com",
+    "retries": 0
+  },
+  "hubspot": {
+    "status": "completed",
+    "name": "HubSpot",
+    "category": "CRM and Sales",
+    "website": "hubspot.com",
+    "retries": 0
+  },
+  "pipedrive": {
+    "status": "completed",
+    "name": "Pipedrive",
+    "category": "CRM and Sales",
+    "website": "pipedrive.com",
+    "retries": 0
+  },
+  "attio": {
+    "status": "completed",
+    "name": "Attio",
+    "category": "CRM and Sales",
+    "website": "attio.com",
+    "retries": 0
+  },
+  "twenty": {
+    "status": "completed",
+    "name": "Twenty",
+    "category": "CRM and Sales",
+    "website": "twenty.com",
+    "retries": 0
+  },
+  "podio": {
+    "status": "completed",
+    "name": "Podio",
+    "category": "CRM and Sales",
+    "website": "podio.com",
+    "retries": 0
+  },
+  "zoho-crm": {
+    "status": "completed",
+    "name": "Zoho CRM",
+    "category": "CRM and Sales",
+    "website": "zoho.com/crm",
+    "retries": 0
+  },
+  "close": {
+    "status": "completed",
+    "name": "Close",
+    "category": "CRM and Sales",
+    "website": "close.com",
+    "retries": 0
+  },
+  "copper": {
+    "status": "completed",
+    "name": "Copper",
+    "category": "CRM and Sales",
+    "website": "copper.com",
+    "retries": 0
+  },
+  "dealcloud": {
+    "status": "completed",
+    "name": "DealCloud",
+    "category": "CRM and Sales",
+    "website": "api.docs.dealcloud.com",
+    "retries": 0
+  },
+  "zendesk": {
+    "status": "completed",
+    "name": "Zendesk",
+    "category": "Support and Helpdesk",
+    "website": "zendesk.com",
+    "retries": 0
+  },
+  "intercom": {
+    "status": "completed",
+    "name": "Intercom",
+    "category": "Support and Helpdesk",
+    "website": "intercom.com",
+    "retries": 0
+  },
+  "freshdesk": {
+    "status": "completed",
+    "name": "Freshdesk",
+    "category": "Support and Helpdesk",
+    "website": "freshdesk.com",
+    "retries": 0
+  },
+  "front": {
+    "status": "completed",
+    "name": "Front",
+    "category": "Support and Helpdesk",
+    "website": "front.com",
+    "retries": 0
+  },
+  "pylon": {
+    "status": "completed",
+    "name": "Pylon",
+    "category": "Support and Helpdesk",
+    "website": "usepylon.com",
+    "retries": 0
+  },
+  "liveagent": {
+    "status": "completed",
+    "name": "LiveAgent",
+    "category": "Support and Helpdesk",
+    "website": "liveagent.com",
+    "retries": 0
+  },
+  "plain": {
+    "status": "completed",
+    "name": "Plain",
+    "category": "Support and Helpdesk",
+    "website": "plain.com",
+    "retries": 0
+  },
+  "help-scout": {
+    "status": "completed",
+    "name": "Help Scout",
+    "category": "Support and Helpdesk",
+    "website": "helpscout.com",
+    "retries": 0
+  },
+  "gorgias": {
+    "status": "completed",
+    "name": "Gorgias",
+    "category": "Support and Helpdesk",
+    "website": "gorgias.com",
+    "retries": 0
+  },
+  "gladly": {
+    "status": "completed",
+    "name": "Gladly",
+    "category": "Support and Helpdesk",
+    "website": "gladly.com",
+    "retries": 0
+  },
+  "slack": {
+    "status": "completed",
+    "name": "Slack",
+    "category": "Communications and Messaging",
+    "website": "slack.com",
+    "retries": 0
+  },
+  "twilio": {
+    "status": "completed",
+    "name": "Twilio",
+    "category": "Communications and Messaging",
+    "website": "twilio.com",
+    "retries": 0
+  },
+  "zoho-cliq": {
+    "status": "completed",
+    "name": "Zoho Cliq",
+    "category": "Communications and Messaging",
+    "website": "zoho.com/cliq",
+    "retries": 0
+  },
+  "lark": {
+    "status": "completed",
+    "name": "Lark (Larksuite)",
+    "category": "Communications and Messaging",
+    "website": "open.larksuite.com",
+    "retries": 0
+  },
+  "pumble": {
+    "status": "completed",
+    "name": "Pumble",
+    "category": "Communications and Messaging",
+    "website": "pumble.com",
+    "retries": 0
+  },
+  "discord": {
+    "status": "completed",
+    "name": "Discord",
+    "category": "Communications and Messaging",
+    "website": "discord.com",
+    "retries": 0
+  },
+  "telegram": {
+    "status": "completed",
+    "name": "Telegram",
+    "category": "Communications and Messaging",
+    "website": "core.telegram.org",
+    "retries": 0
+  },
+  "whatsapp-business": {
+    "status": "completed",
+    "name": "WhatsApp Business",
+    "category": "Communications and Messaging",
+    "website": "developers.facebook.com/docs/whatsapp",
+    "retries": 0
+  },
+  "aircall": {
+    "status": "completed",
+    "name": "Aircall",
+    "category": "Communications and Messaging",
+    "website": "aircall.io",
+    "retries": 0
+  },
+  "vonage": {
+    "status": "completed",
+    "name": "Vonage",
+    "category": "Communications and Messaging",
+    "website": "developer.vonage.com",
+    "retries": 0
+  },
+  "google-ads": {
+    "status": "completed",
+    "name": "Google Ads",
+    "category": "Marketing, Ads, Email and Social",
+    "website": "developers.google.com/google-ads",
+    "retries": 0
+  },
+  "meta-ads": {
+    "status": "completed",
+    "name": "Meta Ads",
+    "category": "Marketing, Ads, Email and Social",
+    "website": "developers.facebook.com/docs/marketing-apis",
+    "retries": 0
+  },
+  "linkedin-ads": {
+    "status": "completed",
+    "name": "LinkedIn Ads",
+    "category": "Marketing, Ads, Email and Social",
+    "website": "learn.microsoft.com/linkedin/marketing",
+    "retries": 0
+  },
+  "gohighlevel": {
+    "status": "completed",
+    "name": "GoHighLevel",
+    "category": "Marketing, Ads, Email and Social",
+    "website": "highlevel.stoplight.io",
+    "retries": 0
+  },
+  "mailchimp": {
+    "status": "completed",
+    "name": "Mailchimp",
+    "category": "Marketing, Ads, Email and Social",
+    "website": "mailchimp.com/developer",
+    "retries": 0
+  },
+  "klaviyo": {
+    "status": "completed",
+    "name": "Klaviyo",
+    "category": "Marketing, Ads, Email and Social",
+    "website": "developers.klaviyo.com",
+    "retries": 0
+  },
+  "systeme-io": {
+    "status": "completed",
+    "name": "systeme.io",
+    "category": "Marketing, Ads, Email and Social",
+    "website": "systeme.io",
+    "retries": 0
+  },
+  "pinterest": {
+    "status": "completed",
+    "name": "Pinterest",
+    "category": "Marketing, Ads, Email and Social",
+    "website": "developers.pinterest.com",
+    "retries": 0
+  },
+  "threads": {
+    "status": "completed",
+    "name": "Threads (Meta)",
+    "category": "Marketing, Ads, Email and Social",
+    "website": "developers.facebook.com/docs/threads",
+    "retries": 0
+  },
+  "sendgrid": {
+    "status": "completed",
+    "name": "SendGrid",
+    "category": "Marketing, Ads, Email and Social",
+    "website": "sendgrid.com",
+    "retries": 0
+  },
+  "shopify": {
+    "status": "completed",
+    "name": "Shopify",
+    "category": "Ecommerce",
+    "website": "shopify.dev",
+    "retries": 0
+  },
+  "woocommerce": {
+    "status": "completed",
+    "name": "WooCommerce",
+    "category": "Ecommerce",
+    "website": "woocommerce.com/document/woocommerce-rest-api",
+    "retries": 0
+  },
+  "bigcommerce": {
+    "status": "completed",
+    "name": "BigCommerce",
+    "category": "Ecommerce",
+    "website": "developer.bigcommerce.com",
+    "retries": 0
+  },
+  "salesforce-commerce": {
+    "status": "completed",
+    "name": "Salesforce Commerce Cloud",
+    "category": "Ecommerce",
+    "website": "developer.salesforce.com/docs/commerce",
+    "retries": 0
+  },
+  "magento": {
+    "status": "completed",
+    "name": "Magento (Adobe Commerce)",
+    "category": "Ecommerce",
+    "website": "developer.adobe.com/commerce",
+    "retries": 0
+  },
+  "squarespace": {
+    "status": "completed",
+    "name": "Squarespace",
+    "category": "Ecommerce",
+    "website": "developers.squarespace.com",
+    "retries": 0
+  },
+  "ecwid": {
+    "status": "completed",
+    "name": "Ecwid",
+    "category": "Ecommerce",
+    "website": "api-docs.ecwid.com",
+    "retries": 0
+  },
+  "gumroad": {
+    "status": "completed",
+    "name": "Gumroad",
+    "category": "Ecommerce",
+    "website": "gumroad.com/api",
+    "retries": 0
+  },
+  "amazon-selling-partner": {
+    "status": "completed",
+    "name": "Amazon Selling Partner",
+    "category": "Ecommerce",
+    "website": "developer-docs.amazon.com/sp-api",
+    "retries": 0
+  },
+  "fanbasis": {
+    "status": "completed",
+    "name": "fanbasis",
+    "category": "Ecommerce",
+    "website": "fanbasis.com",
+    "retries": 0
+  },
+  "dataforseo": {
+    "status": "completed",
+    "name": "DataForSEO",
+    "category": "Data, SEO and Scraping",
+    "website": "docs.dataforseo.com",
+    "retries": 0
+  },
+  "se-ranking": {
+    "status": "completed",
+    "name": "SE Ranking",
+    "category": "Data, SEO and Scraping",
+    "website": "seranking.com/api",
+    "retries": 0
+  },
+  "ahrefs": {
+    "status": "completed",
+    "name": "Ahrefs",
+    "category": "Data, SEO and Scraping",
+    "website": "ahrefs.com/api",
+    "retries": 0
+  },
+  "mrscraper": {
+    "status": "completed",
+    "name": "MrScraper",
+    "category": "Data, SEO and Scraping",
+    "website": "docs.mrscraper.com",
+    "retries": 0
+  },
+  "apify": {
+    "status": "completed",
+    "name": "Apify",
+    "category": "Data, SEO and Scraping",
+    "website": "docs.apify.com",
+    "retries": 0
+  },
+  "firecrawl": {
+    "status": "completed",
+    "name": "Firecrawl",
+    "category": "Data, SEO and Scraping",
+    "website": "firecrawl.dev",
+    "retries": 0
+  },
+  "bright-data": {
+    "status": "completed",
+    "name": "Bright Data",
+    "category": "Data, SEO and Scraping",
+    "website": "brightdata.com",
+    "retries": 0
+  },
+  "sherlock": {
+    "status": "completed",
+    "name": "Sherlock",
+    "category": "Data, SEO and Scraping",
+    "website": "github.com/sherlock-project/sherlock",
+    "retries": 0
+  },
+  "waterfall-io": {
+    "status": "completed",
+    "name": "Waterfall.io",
+    "category": "Data, SEO and Scraping",
+    "website": "waterfall.io",
+    "retries": 0
+  },
+  "clay": {
+    "status": "completed",
+    "name": "Clay",
+    "category": "Data, SEO and Scraping",
+    "website": "clay.com",
+    "retries": 0
+  },
+  "github": {
+    "status": "completed",
+    "name": "GitHub",
+    "category": "Developer, Infra and Data platforms",
+    "website": "docs.github.com/rest",
+    "retries": 0
+  },
+  "vercel": {
+    "status": "completed",
+    "name": "Vercel",
+    "category": "Developer, Infra and Data platforms",
+    "website": "vercel.com/docs/rest-api",
+    "retries": 0
+  },
+  "netlify": {
+    "status": "completed",
+    "name": "Netlify",
+    "category": "Developer, Infra and Data platforms",
+    "website": "docs.netlify.com/api",
+    "retries": 0
+  },
+  "cloudflare": {
+    "status": "completed",
+    "name": "Cloudflare",
+    "category": "Developer, Infra and Data platforms",
+    "website": "developers.cloudflare.com/api",
+    "retries": 0
+  },
+  "supabase": {
+    "status": "completed",
+    "name": "Supabase",
+    "category": "Developer, Infra and Data platforms",
+    "website": "supabase.com/docs",
+    "retries": 0
+  },
+  "neo4j": {
+    "status": "completed",
+    "name": "Neo4j",
+    "category": "Developer, Infra and Data platforms",
+    "website": "neo4j.com/docs/api",
+    "retries": 0
+  },
+  "snowflake": {
+    "status": "completed",
+    "name": "Snowflake",
+    "category": "Developer, Infra and Data platforms",
+    "website": "docs.snowflake.com",
+    "retries": 0
+  },
+  "mongodb-atlas": {
+    "status": "completed",
+    "name": "MongoDB Atlas",
+    "category": "Developer, Infra and Data platforms",
+    "website": "mongodb.com/docs/atlas/api",
+    "retries": 0
+  },
+  "datadog": {
+    "status": "completed",
+    "name": "Datadog",
+    "category": "Developer, Infra and Data platforms",
+    "website": "docs.datadoghq.com/api",
+    "retries": 0
+  },
+  "sentry": {
+    "status": "completed",
+    "name": "Sentry",
+    "category": "Developer, Infra and Data platforms",
+    "website": "docs.sentry.io/api",
+    "retries": 0
+  },
+  "notion": {
+    "status": "completed",
+    "name": "Notion",
+    "category": "Productivity and Project Management",
+    "website": "developers.notion.com",
+    "retries": 0
+  },
+  "airtable": {
+    "status": "completed",
+    "name": "Airtable",
+    "category": "Productivity and Project Management",
+    "website": "airtable.com/developers",
+    "retries": 0
+  },
+  "linear": {
+    "status": "completed",
+    "name": "Linear",
+    "category": "Productivity and Project Management",
+    "website": "developers.linear.app",
+    "retries": 0
+  },
+  "jira": {
+    "status": "completed",
+    "name": "Jira",
+    "category": "Productivity and Project Management",
+    "website": "developer.atlassian.com",
+    "retries": 0
+  },
+  "asana": {
+    "status": "completed",
+    "name": "Asana",
+    "category": "Productivity and Project Management",
+    "website": "developers.asana.com",
+    "retries": 0
+  },
+  "monday": {
+    "status": "completed",
+    "name": "Monday.com",
+    "category": "Productivity and Project Management",
+    "website": "developer.monday.com",
+    "retries": 0
+  },
+  "clickup": {
+    "status": "completed",
+    "name": "ClickUp",
+    "category": "Productivity and Project Management",
+    "website": "clickup.com/api",
+    "retries": 0
+  },
+  "coda": {
+    "status": "completed",
+    "name": "Coda",
+    "category": "Productivity and Project Management",
+    "website": "coda.io/developers",
+    "retries": 0
+  },
+  "smartsheet": {
+    "status": "completed",
+    "name": "Smartsheet",
+    "category": "Productivity and Project Management",
+    "website": "smartsheet.com/developers",
+    "retries": 0
+  },
+  "harvest": {
+    "status": "completed",
+    "name": "Harvest",
+    "category": "Productivity and Project Management",
+    "website": "harvestapp.com",
+    "retries": 0
+  },
+  "stripe": {
+    "status": "completed",
+    "name": "Stripe",
+    "category": "Finance and Fintech",
+    "website": "stripe.com/docs/api",
+    "retries": 0
+  },
+  "plaid": {
+    "status": "completed",
+    "name": "Plaid",
+    "category": "Finance and Fintech",
+    "website": "plaid.com/docs",
+    "retries": 0
+  },
+  "binance": {
+    "status": "completed",
+    "name": "Binance",
+    "category": "Finance and Fintech",
+    "website": "binance-docs.github.io",
+    "retries": 0
+  },
+  "paygent-connect": {
+    "status": "completed",
+    "name": "Paygent Connect",
+    "category": "Finance and Fintech",
+    "website": "paygent",
+    "retries": 0
+  },
+  "ipayx": {
+    "status": "completed",
+    "name": "iPayX",
+    "category": "Finance and Fintech",
+    "website": "ipayx.ai/docs",
+    "retries": 0
+  },
+  "quickbooks": {
+    "status": "completed",
+    "name": "QuickBooks",
+    "category": "Finance and Fintech",
+    "website": "developer.intuit.com",
+    "retries": 0
+  },
+  "xero": {
+    "status": "completed",
+    "name": "Xero",
+    "category": "Finance and Fintech",
+    "website": "developer.xero.com",
+    "retries": 0
+  },
+  "brex": {
+    "status": "completed",
+    "name": "Brex",
+    "category": "Finance and Fintech",
+    "website": "developer.brex.com",
+    "retries": 0
+  },
+  "ramp": {
+    "status": "completed",
+    "name": "Ramp",
+    "category": "Finance and Fintech",
+    "website": "docs.ramp.com",
+    "retries": 0
+  },
+  "pitchbook": {
+    "status": "completed",
+    "name": "PitchBook",
+    "category": "Finance and Fintech",
+    "website": "pitchbook.com",
+    "retries": 0
+  },
+  "notebooklm": {
+    "status": "completed",
+    "name": "NotebookLM",
+    "category": "AI, Research and Media-native",
+    "website": "cloud.google.com/gemini",
+    "retries": 0
+  },
+  "otter-ai": {
+    "status": "completed",
+    "name": "Otter AI",
+    "category": "AI, Research and Media-native",
+    "website": "help.otter.ai",
+    "retries": 0
+  },
+  "fathom": {
+    "status": "completed",
+    "name": "Fathom",
+    "category": "AI, Research and Media-native",
+    "website": "fathom.video",
+    "retries": 0
+  },
+  "consensus": {
+    "status": "completed",
+    "name": "Consensus",
+    "category": "AI, Research and Media-native",
+    "website": "consensus.app",
+    "retries": 0
+  },
+  "reducto": {
+    "status": "completed",
+    "name": "Reducto",
+    "category": "AI, Research and Media-native",
+    "website": "reducto.ai",
+    "retries": 0
+  },
+  "devin": {
+    "status": "completed",
+    "name": "Devin",
+    "category": "AI, Research and Media-native",
+    "website": "docs.devin.ai",
+    "retries": 0
+  },
+  "higgsfield": {
+    "status": "completed",
+    "name": "higgsfield",
+    "category": "AI, Research and Media-native",
+    "website": "higgsfield.ai/cli",
+    "retries": 0
+  },
+  "mermaid-cli": {
+    "status": "completed",
+    "name": "Mermaid CLI",
+    "category": "AI, Research and Media-native",
+    "website": "github.com/mermaid-js/mermaid-cli",
+    "retries": 0
+  },
+  "youtube-transcript": {
+    "status": "completed",
+    "name": "YouTube Transcript",
+    "category": "AI, Research and Media-native",
+    "website": "transcriptapi.com",
+    "retries": 0
+  },
+  "grain": {
+    "status": "completed",
+    "name": "Grain",
+    "category": "AI, Research and Media-native",
+    "website": "grain.com",
+    "retries": 0
+  }
+}

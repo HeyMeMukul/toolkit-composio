@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "app_id": { "type": "string" },
+    "app_name": { "type": "string" },
+    "category": { "type": "string" },
+    "website": { "type": "string", "format": "uri" },
+    "one_liner": { "type": "string", "maxLength": 160 },
+    "auth_methods": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "enum": ["oauth2", "api_key", "basic", "token", "other"] },
+          "notes": { "type": "string" }
+        },
+        "required": ["type", "notes"]
+      }
+    },
+    "access": {
+      "type": "object",
+      "properties": {
+        "mode": { "type": "string", "enum": ["self_serve", "gated"] },
+        "gate_type": { "type": "string", "enum": ["paid_plan", "admin_approval", "partner_contact", "waitlist", "none"] },
+        "evidence_url": { "type": "string", "format": "uri" }
+      },
+      "required": ["mode", "gate_type", "evidence_url"]
+    },
+    "api_surface": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["rest", "graphql", "both", "none"] },
+        "breadth": { "type": "string", "enum": ["narrow", "moderate", "broad"] },
+        "notes": { "type": "string" },
+        "docs_url": { "type": "string", "format": "uri" }
+      },
+      "required": ["type", "breadth", "notes", "docs_url"]
+    },
+    "mcp_status": {
+      "type": "object",
+      "properties": {
+        "exists": { "type": "boolean" },
+        "source": { "type": "string", "enum": ["official", "community", "none"] },
+        "url": { "type": "string", "format": "uri" }
+      },
+      "required": ["exists", "source", "url"]
+    },
+    "buildability": {
+      "type": "object",
+      "properties": {
+        "verdict": { "type": "string", "enum": ["ready", "partial", "blocked"] },
+        "blocker": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "required": ["verdict", "blocker", "notes"]
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claim_field": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "snapshot_path": { "type": "string" },
+          "accessed_at": { "type": "string", "format": "date-time" }
+        },
+        "required": ["claim_field", "url", "snapshot_path", "accessed_at"]
+      }
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["agent_only", "agent_verified", "human_corrected"]
+    },
+    "researched_at": { "type": "string", "format": "date-time" },
+    "research_pass": { "type": "integer", "enum": [1, 2] },
+    "notes": { "type": "string" }
+  },
+  "required": [
+    "app_id", "app_name", "category", "website", "one_liner", "auth_methods",
+    "access", "api_surface", "mcp_status", "buildability", "evidence",
+    "confidence", "researched_at", "research_pass"
+  ]
+}

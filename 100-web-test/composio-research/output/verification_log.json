@@ -1,0 +1,275 @@
+[
+  {
+    "app_id": "waterfall-io",
+    "timestamp": "2026-07-27T13:50:08Z",
+    "fields_checked": 5,
+    "mismatches": 1,
+    "diffs": [
+      {
+        "field": "api_surface.docs_url",
+        "old": "https://waterfall.io",
+        "new": "https://docs.waterfall.io/v1/introduction",
+        "reason": "Found the actual API documentation URL on the homepage."
+      }
+    ],
+    "running_pass1_accuracy": 0.8,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "reducto",
+    "fields_checked": 5,
+    "mismatches": 0,
+    "pass1_accuracy": 1.0,
+    "pass2_accuracy": 1.0,
+    "corrections": [],
+    "running_pass1_accuracy": 0.9,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "jira",
+    "timestamp": "2026-07-27T13:50:27Z",
+    "fields_checked": 5,
+    "mismatches": 1,
+    "details": {
+      "auth_methods": "match",
+      "access": "match",
+      "api_surface": "match",
+      "mcp_status": "mismatch: URL corrected from https://github.com/atlassian/mcp-server-jira (404) to https://github.com/atlassian/atlassian-mcp-server",
+      "buildability": "match"
+    },
+    "running_pass1_accuracy": 0.8666666666666667,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "liveagent",
+    "fields_checked": 5,
+    "mismatches": 0,
+    "pass1_accuracy": 1.0,
+    "pass2_accuracy": 1.0,
+    "corrections": [],
+    "running_pass1_accuracy": 0.9,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "brex",
+    "timestamp": "2026-07-27T13:50:34.928835Z",
+    "fields_checked": 5,
+    "mismatches": 0,
+    "pass1_accuracy": 1.0,
+    "pass2_accuracy": 1.0,
+    "corrections": [],
+    "running_pass1_accuracy": 0.92,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "firecrawl",
+    "timestamp": "2026-07-27T13:50:52Z",
+    "fields_checked": 5,
+    "mismatches": 1,
+    "diffs": [
+      {
+        "field": "access.gate_type",
+        "old": "paid_plan",
+        "new": "freemium",
+        "reason": "Pricing page advertises a Free tier available."
+      }
+    ],
+    "running_pass1_accuracy": 0.9,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "zendesk",
+    "fields_checked": 5,
+    "mismatches": 0,
+    "pass1_accuracy": 1.0,
+    "pass2_accuracy": 1.0,
+    "corrections": [],
+    "running_pass1_accuracy": 0.9142857142857143,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "ecwid",
+    "timestamp": "2026-07-27T13:51:12Z",
+    "fields_checked": 5,
+    "mismatches": 0,
+    "details": {
+      "auth_methods": "match",
+      "access": "match",
+      "api_surface": "match",
+      "mcp_status": "match",
+      "buildability": "match"
+    },
+    "running_pass1_accuracy": 0.925,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "paygent-connect",
+    "timestamp": "2026-07-27T13:51:16.199766Z",
+    "fields_checked": 5,
+    "mismatches": 0,
+    "pass1_accuracy": 1.0,
+    "pass2_accuracy": 1.0,
+    "corrections": [],
+    "running_pass1_accuracy": 0.9333333333333333,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "mailchimp",
+    "fields_checked": 5,
+    "mismatches": 0,
+    "pass1_accuracy": 1.0,
+    "pass2_accuracy": 1.0,
+    "corrections": [],
+    "running_pass1_accuracy": 0.94,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "discord",
+    "timestamp": "2026-07-27T13:51:25Z",
+    "fields_checked": 5,
+    "mismatches": 1,
+    "diffs": [
+      {
+        "field": "mcp_status.url",
+        "old": "https://github.com/mcp-discord",
+        "new": "https://github.com/BrainDAO/mcp-discord",
+        "reason": "The previous URL returned 404, replaced with an existing community MCP repo."
+      }
+    ],
+    "running_pass1_accuracy": 0.9272727272727272,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "systeme-io",
+    "fields_checked": 5,
+    "mismatches": 0,
+    "pass1_accuracy": 1.0,
+    "pass2_accuracy": 1.0,
+    "corrections": [],
+    "running_pass1_accuracy": 0.9333333333333333,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "neo4j",
+    "timestamp": "2026-07-27T13:51:55.932877Z",
+    "fields_checked": 5,
+    "mismatches": 0,
+    "pass1_accuracy": 1.0,
+    "pass2_accuracy": 1.0,
+    "corrections": [],
+    "running_pass1_accuracy": 0.9384615384615385,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "zoho-cliq",
+    "timestamp": "2026-07-27T13:52:07Z",
+    "fields_checked": 5,
+    "mismatches": 2,
+    "diffs": [
+      {
+        "field": "access.gate_type",
+        "old": "none",
+        "new": "freemium",
+        "reason": "Zoho Cliq offers a free tier but is generally a paid product with a freemium model."
+      },
+      {
+        "field": "api_surface.docs_url",
+        "old": "https://www.zoho.com/cliq/help/api/",
+        "new": "https://www.zoho.com/cliq/help/restapi/",
+        "reason": "The previous API doc URL was a 403, updated to the actual REST API docs URL."
+      }
+    ],
+    "running_pass1_accuracy": 0.9142857142857143,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "snowflake",
+    "timestamp": "2026-07-27T13:52:20.523454Z",
+    "fields_checked": 5,
+    "mismatches": 0,
+    "pass1_accuracy": 1.0,
+    "pass2_accuracy": 1.0,
+    "corrections": [],
+    "running_pass1_accuracy": 0.92,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "shopify",
+    "timestamp": "2026-07-27T13:52:26Z",
+    "fields_checked": 5,
+    "mismatches": 1,
+    "details": {
+      "auth_methods": "match",
+      "access": "match",
+      "api_surface": "match",
+      "mcp_status": "mismatch: URL corrected from https://shopify.dev/docs/api/mcp (404) to https://shopify.dev/docs/apps/build/storefront-mcp",
+      "buildability": "match"
+    },
+    "running_pass1_accuracy": 0.9125,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "airtable",
+    "timestamp": "2026-07-27T13:52:28Z",
+    "fields_checked": 5,
+    "mismatches": 1,
+    "diffs": [
+      {
+        "field": "access.gate_type",
+        "old": "none",
+        "new": "freemium",
+        "reason": "Airtable operates on a freemium model with various paid plans."
+      }
+    ],
+    "running_pass1_accuracy": 0.9058823529411765,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "mermaid-cli",
+    "timestamp": "2026-07-27T13:52:54.261307Z",
+    "fields_checked": 5,
+    "mismatches": 1,
+    "pass1_accuracy": 0.8,
+    "pass2_accuracy": 1.0,
+    "corrections": [
+      {
+        "field": "mcp_status.url",
+        "old": "https://github.com/mermaid-js/mermaid-cli",
+        "new": "https://github.com/hustcc/mcp-mermaid",
+        "reason": "The original URL pointed to the CLI itself, not the MCP server. Updated to point to a popular community MCP server wrapping the CLI."
+      }
+    ],
+    "running_pass1_accuracy": 0.9,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "attio",
+    "timestamp": "2026-07-27T13:52:58Z",
+    "fields_checked": 5,
+    "mismatches": 0,
+    "details": {
+      "auth_methods": "match",
+      "access": "match",
+      "api_surface": "match",
+      "mcp_status": "match",
+      "buildability": "match"
+    },
+    "running_pass1_accuracy": 0.9052631578947369,
+    "running_pass2_accuracy": 1.0
+  },
+  {
+    "app_id": "podio",
+    "timestamp": "2026-07-27T13:54:23Z",
+    "fields_checked": 5,
+    "mismatches": 2,
+    "details": {
+      "auth_methods": "match",
+      "access": "mismatch: evidence_url 301 redirected, corrected to https://developers.podio.com",
+      "api_surface": "match",
+      "mcp_status": "mismatch: corrected from exists:false to exists:true, community, url: https://github.com/stoskov/podio-mcp",
+      "buildability": "match"
+    },
+    "running_pass1_accuracy": 0.89,
+    "running_pass2_accuracy": 1.0
+  }
+]

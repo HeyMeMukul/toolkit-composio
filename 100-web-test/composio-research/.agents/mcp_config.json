@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "composio": {
+      "serverUrl": "https://backend.composio.dev/tool_router/trs_VcwgUVZ61vib/mcp",
+      "headers": {
+        "x-api-key": "ak_bX8LiMzAhd6al7KJ5wdJ"
+      }
+    }
+  }
+}
